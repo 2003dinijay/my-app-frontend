@@ -9,17 +9,39 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: docker build -t my-frontend:latest ./
-        # Note: We use ./ because the code is in the root now!
+      # Set image name & tags
+      - name: Set up image metadata
+        run: |
+          echo "IMAGE_NAME=${{ secrets.ACR_NAME }}.azurecr.io/frontend" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
 
+      # Build Docker Image
+      - name: Build Docker Image
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
+
+      # Login to ACR
+      - name: Login to ACR
+        run: |
+          echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ secrets.ACR_NAME }}.azurecr.io \
+          -u ${{ secrets.ACR_USERNAME }} --password-stdin
+
+      # Scan for Vulnerabilities (scan the SHA-tagged image)
       - name: Scan for Vulnerabilities
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'my-frontend:latest'
+          image-ref: '${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
+
+      # Push both tags
+      - name: Push Docker Images to ACR
+        run: |
+          docker push $IMAGE_NAME:$IMAGE_TAG
+          docker push $IMAGE_NAME:latest
