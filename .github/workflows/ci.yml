@@ -45,3 +45,12 @@ jobs:
         run: |
           docker push $IMAGE_NAME:$IMAGE_TAG
           docker push $IMAGE_NAME:latest
+
+      # 7. Trigger Main Repo Deployment
+      - name: Trigger Deployment in Main Repo
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.MAIN_REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/2003dinijay/my-3tier-app/dispatches \
+            -d '{"event_type": "sub_repo_update"}'
