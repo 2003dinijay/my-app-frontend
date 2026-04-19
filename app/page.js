@@ -5,22 +5,33 @@ export default function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
+  // Get the API URL from environment variables, defaulting to localhost for local dev
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
   // Fetch todos from your Backend API
   useEffect(() => {
-    fetch('/api/todos')
-      .then(res => res.json())
-      .then(data => setTodos(data));
-  }, []);
+    fetch(`${API_BASE_URL}/api/todos`)
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then(data => setTodos(data))
+      .catch(err => console.error("Fetch error:", err));
+  }, [API_BASE_URL]);
 
   const addTodo = async () => {
-    const res = await fetch('/api/todos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ task: input })
-    });
-    const newTodo = await res.json();
-    setTodos([...todos, newTodo]);
-    setInput("");
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/todos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task: input })
+      });
+      const newTodo = await res.json();
+      setTodos([...todos, newTodo]);
+      setInput("");
+    } catch (err) {
+      console.error("Add error:", err);
+    }
   };
 
   return (
