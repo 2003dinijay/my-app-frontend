@@ -22,7 +22,7 @@ export default function TodoApp() {
       const res = await fetch('/api/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task: input }) d
+        body: JSON.stringify({ task: input }) 
       });
       const newTodo = await res.json();
       setTodos([...todos, newTodo]);
