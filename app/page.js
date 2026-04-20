@@ -5,7 +5,7 @@ export default function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
-  // We use relative paths now because Next.js rewrites handles the rest
+
   useEffect(() => {
     fetch('/api/todos')
       .then(res => {
