@@ -5,26 +5,24 @@ export default function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
-  // Get the API URL from environment variables, defaulting to localhost for local dev
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
-  // Fetch todos from your Backend API
+  // We use relative paths now because Next.js rewrites handles the rest
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/todos`)
+    fetch('/api/todos')
       .then(res => {
-        if (!res.ok) throw new Error("Network response was not ok");
+        if (!res.ok) throw new Error("Backend not reached");
         return res.json();
       })
       .then(data => setTodos(data))
       .catch(err => console.error("Fetch error:", err));
-  }, [API_BASE_URL]);
+  }, []);
 
   const addTodo = async () => {
+    if (!input.trim()) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/todos`, {
+      const res = await fetch('/api/todos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task: input })
+        body: JSON.stringify({ task: input }) d
       });
       const newTodo = await res.json();
       setTodos([...todos, newTodo]);
