@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-/* ── Fonts ─────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-/* ── Tokens ─────────────────────────────────────────────── */
 :root {
   --bg:        #f5f0e8;
   --card:      #fffef9;
@@ -15,13 +13,15 @@
   --green:     #4a7c6f;
   --green-lt:  #d8ede9;
   --danger:    #c0392b;
+  --danger-lt: #fde8e8;
+  --blue:      #4a6fa5;
+  --blue-lt:   #dce8f5;
   --border:    #e8e2d8;
   --shadow:    0 4px 40px rgba(26,22,18,.08);
   --radius:    18px;
   --radius-sm: 10px;
 }
 
-/* ── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -29,7 +29,6 @@ body {
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
-  /* Subtle linen texture */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f5f0e8'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ece7de' opacity='.5'/%3E%3C/svg%3E");
 }
 
@@ -44,12 +43,12 @@ body {
 
 .todo-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  overflow: hidden;
+  overflow: visible;
   animation: slideUp .45s cubic-bezier(.16,1,.3,1) both;
 }
 
@@ -60,85 +59,74 @@ body {
 
 /* ── Header ─────────────────────────────────────────────── */
 .todo-header {
-  padding: 36px 32px 24px;
+  padding: 30px 32px 22px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, #fffef9 0%, #fdf6ec 100%);
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .todo-header-top {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
-.todo-icon {
-  color: var(--accent);
-  font-size: 20px;
-  animation: spin 8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+.todo-icon { color: var(--accent); font-size: 18px; animation: spin 8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .todo-title {
   font-family: 'Instrument Serif', serif;
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-weight: 400;
   color: var(--ink);
   letter-spacing: -0.02em;
   line-height: 1;
+  flex: 1;
 }
 
-.todo-quote {
-  font-size: .82rem;
-  color: var(--ink-muted);
-  font-style: italic;
-  letter-spacing: .01em;
+.todo-quote { font-size: .8rem; color: var(--ink-muted); font-style: italic; }
+
+/* ── Tab Switcher ────────────────────────────────────────── */
+.todo-tab-switcher {
+  display: flex;
+  gap: 3px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 3px;
 }
+
+.tab-pill {
+  display: flex;
+  align-items: center;
+  padding: 5px 13px;
+  border-radius: 99px;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.tab-pill.active { background: var(--ink); color: #fff; }
+.tab-pill:not(.active):hover { background: var(--border); }
 
 /* ── Progress ───────────────────────────────────────────── */
-.todo-progress-wrap {
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--border);
-}
+.todo-progress-wrap { padding: 14px 32px; border-bottom: 1px solid var(--border); }
+.todo-progress-label { display: flex; justify-content: space-between; font-size: .75rem; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+.todo-progress-pct { color: var(--accent); font-weight: 600; }
+.todo-progress-track { height: 4px; background: var(--accent-lt); border-radius: 99px; overflow: hidden; }
+.todo-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #e8956a); border-radius: 99px; transition: width .5s cubic-bezier(.16,1,.3,1); }
 
-.todo-progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: .75rem;
-  color: var(--ink-soft);
-  margin-bottom: 6px;
-  font-weight: 500;
-}
+/* ── Input Section ──────────────────────────────────────── */
+.todo-input-section { border-bottom: 1px solid var(--border); padding: 18px 28px 14px; position: relative; }
 
-.todo-progress-pct {
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.todo-progress-track {
-  height: 4px;
-  background: var(--accent-lt);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.todo-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #e8956a);
-  border-radius: 99px;
-  transition: width .5s cubic-bezier(.16,1,.3,1);
-}
-
-/* ── Input ──────────────────────────────────────────────── */
-.todo-input-row {
-  display: flex;
-  gap: 10px;
-  padding: 20px 32px;
-  border-bottom: 1px solid var(--border);
-}
+.todo-input-row { display: flex; gap: 10px; margin-bottom: 10px; }
 
 .todo-input {
   flex: 1;
@@ -147,259 +135,307 @@ body {
   border-radius: var(--radius-sm);
   padding: 11px 16px;
   font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
+  font-size: .93rem;
   color: var(--ink);
   outline: none;
   transition: border-color .2s, box-shadow .2s;
 }
-
 .todo-input::placeholder { color: var(--ink-muted); }
-
-.todo-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-lt);
-}
+.todo-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
 
 .todo-add-btn {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  background: var(--ink);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--ink); color: #fff;
+  border: none; border-radius: var(--radius-sm);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background .2s, transform .15s;
 }
+.todo-add-btn:hover:not(:disabled) { background: var(--accent); transform: scale(1.05); }
+.todo-add-btn:disabled { background: var(--ink-muted); cursor: not-allowed; transform: none; }
 
-.todo-add-btn:hover:not(:disabled) {
-  background: var(--accent);
-  transform: scale(1.05);
-}
+/* ── Schedule Row ───────────────────────────────────────── */
+.schedule-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; position: relative; }
 
-.todo-add-btn:disabled {
-  background: var(--ink-muted);
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* ── Filter Tabs ────────────────────────────────────────── */
-.todo-filters {
-  display: flex;
-  gap: 4px;
-  padding: 14px 32px;
-  border-bottom: 1px solid var(--border);
-}
-
-.todo-filter-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  border-radius: 99px;
-  border: 1.5px solid transparent;
-  background: transparent;
+.schedule-chip {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
   font-family: 'DM Sans', sans-serif;
-  font-size: .8rem;
-  font-weight: 500;
-  color: var(--ink-soft);
-  cursor: pointer;
+  font-size: .77rem; font-weight: 500;
+  color: var(--ink-soft); cursor: pointer;
   transition: all .2s;
 }
+.schedule-chip:hover { border-color: var(--accent); color: var(--accent); }
+.schedule-chip.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
+.schedule-chip.clear { border-color: transparent; color: var(--ink-muted); padding: 5px 8px; }
+.schedule-chip.clear:hover { color: var(--danger); background: var(--danger-lt); border-color: transparent; }
 
-.todo-filter-btn:hover { color: var(--ink); background: var(--bg); }
-
-.todo-filter-btn.active {
-  background: var(--ink);
-  color: #fff;
-  border-color: var(--ink);
-}
-
-.todo-badge {
-  background: rgba(255,255,255,.2);
-  color: inherit;
-  font-size: .7rem;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 99px;
-  background: var(--border);
-  color: var(--ink-soft);
-}
-
-.todo-filter-btn.active .todo-badge {
-  background: rgba(255,255,255,.2);
-  color: #fff;
-}
-
-.todo-badge.done {
-  background: var(--green-lt);
-  color: var(--green);
-}
-
-/* ── List ───────────────────────────────────────────────── */
-.todo-list {
-  list-style: none;
-  padding: 12px 20px;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.todo-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 12px;
+/* ── Mini Calendar Popup ────────────────────────────────── */
+.cal-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  background: var(--card);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  border: 1.5px solid transparent;
+  box-shadow: 0 8px 32px rgba(26,22,18,.13);
+  padding: 14px;
+  width: 240px;
+  animation: popIn .2s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes popIn { from { opacity:0; transform: scale(.96) translateY(-4px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cal-month-label { font-size: .82rem; font-weight: 600; color: var(--ink); }
+.cal-nav {
+  width: 26px; height: 26px; border: none; background: var(--bg);
+  border-radius: 6px; cursor: pointer; font-size: 1rem; color: var(--ink-soft);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+}
+.cal-nav:hover { background: var(--border); color: var(--ink); }
+
+.cal-grid-head {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+.cal-grid-head span { text-align: center; font-size: .67rem; font-weight: 600; color: var(--ink-muted); padding: 2px 0; }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; }
+.cal-day {
+  aspect-ratio: 1; border: none; background: transparent;
+  border-radius: 6px; font-size: .75rem; color: var(--ink-soft);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s; font-family: 'DM Sans', sans-serif;
+}
+.cal-day:hover:not(:disabled):not(.selected) { background: var(--accent-lt); color: var(--accent); }
+.cal-day.today { font-weight: 700; color: var(--ink); }
+.cal-day.selected { background: var(--accent); color: #fff; font-weight: 600; }
+.cal-day.empty { pointer-events: none; }
+.cal-day:disabled { pointer-events: none; }
+
+.cal-footer { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.cal-today-btn, .cal-clear-btn {
+  flex: 1; padding: 6px; border-radius: 6px; border: 1px solid var(--border);
+  font-family: 'DM Sans', sans-serif; font-size: .75rem; font-weight: 500;
+  cursor: pointer; transition: all .15s;
+}
+.cal-today-btn { background: var(--ink); color: #fff; border-color: var(--ink); }
+.cal-today-btn:hover { background: var(--accent); border-color: var(--accent); }
+.cal-clear-btn { background: transparent; color: var(--ink-soft); }
+.cal-clear-btn:hover { background: var(--danger-lt); color: var(--danger); border-color: transparent; }
+
+/* ── Time Popup ─────────────────────────────────────────── */
+.time-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 32px rgba(26,22,18,.13);
+  padding: 16px 18px;
+  animation: popIn .2s cubic-bezier(.16,1,.3,1) both;
+}
+.time-popup-label { font-size: .75rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+.time-picker { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.time-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.time-val { font-size: 1.6rem; font-weight: 300; color: var(--ink); font-family: 'Instrument Serif', serif; min-width: 48px; text-align: center; }
+.time-arr {
+  border: none; background: var(--bg); border-radius: 5px;
+  width: 32px; height: 22px; cursor: pointer; color: var(--ink-soft);
+  font-size: .65rem; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.time-arr:hover { background: var(--accent-lt); color: var(--accent); }
+.time-sep { font-size: 1.4rem; color: var(--ink-muted); align-self: center; margin-bottom: 4px; }
+
+.ampm-toggle { display: flex; flex-direction: column; gap: 3px; margin-left: 4px; }
+.ampm-btn {
+  padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border);
+  font-family: 'DM Sans', sans-serif; font-size: .72rem; font-weight: 600;
+  cursor: pointer; color: var(--ink-soft); background: transparent; transition: all .15s;
+}
+.ampm-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ampm-btn:not(.active):hover { background: var(--accent-lt); color: var(--accent); border-color: var(--accent); }
+
+.time-done-btn {
+  width: 100%; padding: 8px; border-radius: 7px;
+  background: var(--ink); color: #fff; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600;
+  cursor: pointer; transition: background .15s;
+}
+.time-done-btn:hover { background: var(--accent); }
+
+/* ── Filters ────────────────────────────────────────────── */
+.todo-filters { display: flex; gap: 4px; padding: 12px 28px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.todo-filter-btn {
+  display: flex; align-items: center; gap: 5px; padding: 4px 12px;
+  border-radius: 99px; border: 1.5px solid transparent;
+  background: transparent; font-family: 'DM Sans', sans-serif;
+  font-size: .78rem; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: all .2s;
+}
+.todo-filter-btn:hover { color: var(--ink); background: var(--bg); }
+.todo-filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.todo-badge {
+  font-size: .68rem; font-weight: 600; padding: 1px 6px;
+  border-radius: 99px; background: var(--border); color: var(--ink-soft);
+}
+.todo-filter-btn.active .todo-badge { background: rgba(255,255,255,.2); color: #fff; }
+.todo-badge.done { background: var(--green-lt); color: var(--green); }
+.todo-badge.sched { background: var(--blue-lt); color: var(--blue); }
+
+/* ── Todo List ──────────────────────────────────────────── */
+.todo-list { list-style: none; padding: 10px 18px; min-height: 80px; display: flex; flex-direction: column; gap: 3px; }
+.todo-item {
+  display: flex; align-items: flex-start; gap: 11px; padding: 11px 10px;
+  border-radius: var(--radius-sm); border: 1.5px solid transparent;
   transition: background .2s, border-color .2s, opacity .3s, transform .3s;
   animation: itemIn .3s cubic-bezier(.16,1,.3,1) both;
 }
-
-@keyframes itemIn {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.todo-item:hover {
-  background: var(--bg);
-  border-color: var(--border);
-}
-
+@keyframes itemIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+.todo-item:hover { background: var(--bg); border-color: var(--border); }
 .todo-item.completed { opacity: .6; }
+.todo-item.overdue { border-color: #f5d5d2; background: #fff8f7; }
+.todo-item.deleting { opacity: 0; transform: translateX(20px); pointer-events: none; }
 
-.todo-item.deleting {
-  opacity: 0;
-  transform: translateX(20px);
-  pointer-events: none;
-}
-
-/* ── Checkbox ───────────────────────────────────────────── */
+/* Checkbox */
 .todo-checkbox {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  border-radius: 6px;
-  border: 2px solid var(--border);
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .2s;
-  color: #fff;
+  width: 21px; height: 21px; flex-shrink: 0; margin-top: 1px;
+  border-radius: 6px; border: 2px solid var(--border);
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; color: #fff;
 }
-
 .todo-checkbox:hover { border-color: var(--accent); background: var(--accent-lt); }
+.todo-checkbox.checked { background: var(--green); border-color: var(--green); }
 
-.todo-checkbox.checked {
-  background: var(--green);
-  border-color: var(--green);
+/* Task body */
+.todo-task-body { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.todo-task-text { font-size: .91rem; font-weight: 400; color: var(--ink); line-height: 1.4; word-break: break-word; transition: color .2s; }
+.todo-item.completed .todo-task-text { text-decoration: line-through; color: var(--ink-muted); }
+
+/* Due date/time labels */
+.todo-due { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.todo-due span { display: flex; align-items: center; font-size: .72rem; color: var(--ink-muted); font-weight: 500; }
+.todo-due.overdue-label span { color: #c0392b88; }
+
+.overdue-pill {
+  font-size: .65rem; font-weight: 700; padding: 1px 7px;
+  background: #fde8e8; color: var(--danger);
+  border-radius: 99px; text-transform: uppercase; letter-spacing: .04em;
 }
 
-/* ── Task Text ──────────────────────────────────────────── */
-.todo-task-text {
-  flex: 1;
-  font-size: .92rem;
-  font-weight: 400;
-  color: var(--ink);
-  line-height: 1.4;
-  transition: color .2s;
-  word-break: break-word;
-}
-
-.todo-item.completed .todo-task-text {
-  text-decoration: line-through;
-  color: var(--ink-muted);
-}
-
-/* ── Delete ─────────────────────────────────────────────── */
+/* Delete btn */
 .todo-delete-btn {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--ink-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: all .2s;
+  width: 26px; height: 26px; flex-shrink: 0; border: none; border-radius: 6px;
+  background: transparent; color: var(--ink-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: all .2s; margin-top: 1px;
 }
-
 .todo-item:hover .todo-delete-btn { opacity: 1; }
+.todo-delete-btn:hover { background: var(--danger-lt); color: var(--danger); }
 
-.todo-delete-btn:hover {
-  background: #fde8e8;
-  color: var(--danger);
-}
-
-/* ── Empty State ────────────────────────────────────────── */
-.todo-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 32px 0;
-  color: var(--ink-muted);
-  font-size: .88rem;
-  font-style: italic;
-}
-
+/* Empty state */
+.todo-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 32px 0; color: var(--ink-muted); font-size: .87rem; font-style: italic; }
 .todo-empty-icon { font-size: 1.8rem; }
 
-/* ── Spinner ────────────────────────────────────────────── */
-.todo-spinner {
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
+/* Spinner */
+.todo-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
 
-/* ── Footer ─────────────────────────────────────────────── */
-.todo-footer {
-  padding: 14px 32px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: flex-end;
-}
-
+/* Footer */
+.todo-footer { padding: 12px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
 .todo-clear-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .78rem;
-  font-weight: 500;
-  color: var(--ink-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 0;
-  transition: color .2s;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: .77rem; font-weight: 500;
+  color: var(--ink-muted); background: none; border: none; cursor: pointer;
+  padding: 4px 0; transition: color .2s;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent;
 }
+.todo-clear-btn:hover { color: var(--danger); text-decoration-color: var(--danger); }
 
-.todo-clear-btn:hover {
-  color: var(--danger);
-  text-decoration-color: var(--danger);
+/* ── Calendar Full View ──────────────────────────────────── */
+.cal-view { padding: 0 0 4px; }
+
+.cal-view-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px 10px;
 }
+.cal-view-month { font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--ink); }
+
+.cal-view-days-head {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  padding: 0 18px; margin-bottom: 4px;
+}
+.cal-view-days-head span { text-align: center; font-size: .7rem; font-weight: 600; color: var(--ink-muted); padding: 4px 0; }
+
+.cal-view-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 0 18px; }
+
+.cal-view-cell {
+  min-height: 64px; border-radius: 8px; padding: 5px 4px;
+  border: 1.5px solid transparent;
+  display: flex; flex-direction: column; gap: 2px;
+  transition: background .15s, border-color .15s;
+}
+.cal-view-cell:not(.empty):hover { background: var(--accent-lt); border-color: var(--border); }
+.cal-view-cell.today { background: var(--accent-lt); border-color: var(--accent); }
+.cal-view-cell.has-tasks { border-color: var(--border); }
+.cal-view-cell.empty { pointer-events: none; }
+
+.cal-view-daynum {
+  font-size: .75rem; font-weight: 600; color: var(--ink-soft);
+  text-align: right; padding-right: 2px;
+}
+.cal-view-cell.today .cal-view-daynum { color: var(--accent); }
+
+.cal-task-dot {
+  font-size: .62rem; padding: 1px 5px; border-radius: 4px;
+  background: var(--blue-lt); color: var(--blue);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-weight: 500; line-height: 1.5;
+}
+.cal-task-dot.done { background: var(--green-lt); color: var(--green); text-decoration: line-through; }
+.cal-task-dot.od { background: var(--danger-lt); color: var(--danger); }
+.cal-more { font-size: .62rem; color: var(--ink-muted); padding-left: 4px; }
+
+/* Upcoming list */
+.cal-upcoming { padding: 16px 28px 20px; border-top: 1px solid var(--border); margin-top: 12px; }
+.cal-upcoming-label { font-size: .7rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px; }
+
+.cal-upcoming-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  transition: background .15s; margin-bottom: 3px;
+}
+.cal-upcoming-item:hover { background: var(--bg); }
+.cal-upcoming-item.overdue { background: #fff8f7; }
+
+.cal-upcoming-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  background: var(--accent);
+}
+.cal-upcoming-item.overdue .cal-upcoming-dot { background: var(--danger); }
+
+.cal-upcoming-info { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.cal-upcoming-task { font-size: .85rem; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal-upcoming-date { font-size: .72rem; color: var(--ink-muted); }
+
+.cal-no-upcoming { font-size: .83rem; color: var(--ink-muted); font-style: italic; text-align: center; padding: 12px 0; }
 
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 520px) {
   .todo-root { padding: 20px 8px 40px; }
-  .todo-header, .todo-input-row, .todo-progress-wrap,
-  .todo-filters, .todo-footer { padding-left: 20px; padding-right: 20px; }
-  .todo-list { padding-left: 12px; padding-right: 12px; }
-  .todo-title { font-size: 2.1rem; }
+  .todo-header, .cal-view-nav, .cal-upcoming { padding-left: 18px; padding-right: 18px; }
+  .todo-input-section { padding-left: 16px; padding-right: 16px; }
+  .todo-filters { padding-left: 16px; padding-right: 16px; }
+  .todo-list { padding-left: 10px; padding-right: 10px; }
+  .todo-footer { padding-left: 18px; padding-right: 18px; }
+  .todo-title { font-size: 2rem; }
+  .cal-view-grid, .cal-view-days-head { padding-left: 10px; padding-right: 10px; }
+  .cal-view-cell { min-height: 52px; }
+  .cal-task-dot { display: none; }
+  .cal-more { display: none; }
 }
